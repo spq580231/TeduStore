@@ -88,6 +88,7 @@
 				if (json.state == 200) {
 					// 注册成功
 					alert("注册成功！");
+					location.href = "index.html";
 				} else if (json.state == 401) {
 					// 用户名被占用
 					alert("注册失败！" + json.message);

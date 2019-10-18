@@ -360,9 +360,9 @@
 				$("#hot-list").empty();
 				
 				var list = json.data;
-				console.log("热销的4件商品：")
+				//console.log("热销的4件商品：")
 				for (var i = 0; i < list.length; i++) {
-					console.log(list[i].title);
+					//console.log(list[i].title);
 					
 					var html = '<div class="col-md-12">'
 						+ '<div class="col-md-9"><a href="product.html?id=#{goodsId}">#{goodsTitle}</a></div>'
@@ -386,6 +386,7 @@
 			"type": "POST",
 			"dataType": "json",
 			"success": function(json) {
+				console.log(json.data)
 				if (json.state==200) {	
 					$("#login").html("<a href='userdata.html'><span class='fa fa-user'>&nbsp"+json.data.username+"</span></a>")	
 					$("#logout").html("<a href='index.html'>退出</a>")

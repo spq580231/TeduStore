@@ -15,16 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * HTMLè®¿é—®è¿‡æ»¤å™¨
+ * HTML·ÃÎÊ¹ıÂËÆ÷
  */
 public class HtmlAccessFilter implements Filter {
 	/**
-	 * ç™½åå•ï¼Œå…è®¸ç›´æ¥è®¿é—®çš„é¡µé¢åˆ—è¡¨
+	 * °×Ãûµ¥£¬ÔÊĞíÖ±½Ó·ÃÎÊµÄÒ³ÃæÁĞ±í
 	 */
 	private List<String> whiteList = new ArrayList<String>();
 	
 	public void init(FilterConfig arg0) throws ServletException {
-		// ç¡®å®šç™½åå•
+		// È·¶¨°×Ãûµ¥
 		whiteList.add("index.html");
 		whiteList.add("product.html");
 		whiteList.add("register.html");
@@ -33,8 +33,8 @@ public class HtmlAccessFilter implements Filter {
 		whiteList.add("leftTemplate.html");
 		whiteList.add("topTemplate.html");
 		
-		// è¾“å‡º
-		System.out.println("æ— éœ€ç™»å½•çš„é¡µé¢åˆ—è¡¨ï¼š");
+		// Êä³ö
+		System.out.println("ÎŞĞèµÇÂ¼µÄÒ³ÃæÁĞ±í£º");
 		for (String page : whiteList) {
 			System.out.println(page);
 		}
@@ -44,37 +44,37 @@ public class HtmlAccessFilter implements Filter {
 			ServletResponse arg1, 
 			FilterChain filterChain)
 			throws IOException, ServletException {
-		// è·å–å½“å‰é¡µé¢
+		// »ñÈ¡µ±Ç°Ò³Ãæ
 		HttpServletRequest request 
 			= (HttpServletRequest) arg0;
 		String uri = request.getRequestURI();
 		int beginIndex = uri.lastIndexOf("/") + 1;
 		String fileName = uri.substring(beginIndex);
-		System.out.println("å½“å‰è¯·æ±‚é¡µé¢ï¼š" + fileName);
+		System.out.println("µ±Ç°ÇëÇóÒ³Ãæ£º" + fileName);
 		
-		// åˆ¤æ–­å½“å‰è®¿é—®çš„æ˜¯å“ªä¸ªé¡µé¢
-		// å¦‚æœæ˜¯æ— éœ€ç™»å½•çš„é¡µé¢ï¼Œç›´æ¥æ”¾è¡Œï¼Œä¾‹å¦‚ï¼šlogin.html
+		// ÅĞ¶Ïµ±Ç°·ÃÎÊµÄÊÇÄÄ¸öÒ³Ãæ
+		// Èç¹ûÊÇÎŞĞèµÇÂ¼µÄÒ³Ãæ£¬Ö±½Ó·ÅĞĞ£¬ÀıÈç£ºlogin.html
 		if (whiteList.contains(fileName)) {
-			System.out.println("\tæ— éœ€ç™»å½•ï¼Œç›´æ¥æ”¾è¡Œ");
-			// ç»§ç»­æ‰§è¡Œè¿‡æ»¤å™¨é“¾
+			System.out.println("\tÎŞĞèµÇÂ¼£¬Ö±½Ó·ÅĞĞ");
+			// ¼ÌĞøÖ´ĞĞ¹ıÂËÆ÷Á´
 			filterChain.doFilter(arg0, arg1);
 			return;
 		}
 		
-		// å¦‚æœæ˜¯éœ€è¦ç™»å½•çš„é¡µé¢ï¼Œåˆ¤æ–­sessionï¼Œå†³å®šæ”¾è¡Œæˆ–é‡å®šå‘
+		// Èç¹ûÊÇĞèÒªµÇÂ¼µÄÒ³Ãæ£¬ÅĞ¶Ïsession£¬¾ö¶¨·ÅĞĞ»òÖØ¶¨Ïò
 		HttpSession session
 			= request.getSession();
 		if (session.getAttribute("uid") != null) {
-			// Sessionä¸­æœ‰uidï¼Œè¡¨ç¤ºå·²ç™»å½•ï¼Œç›´æ¥æ”¾è¡Œ
-			System.out.println("\tå·²ç»ç™»å½•ï¼Œç›´æ¥æ”¾è¡Œ");
-			// ç»§ç»­æ‰§è¡Œè¿‡æ»¤å™¨é“¾
+			// SessionÖĞÓĞuid£¬±íÊ¾ÒÑµÇÂ¼£¬Ö±½Ó·ÅĞĞ
+			System.out.println("\tÒÑ¾­µÇÂ¼£¬Ö±½Ó·ÅĞĞ");
+			// ¼ÌĞøÖ´ĞĞ¹ıÂËÆ÷Á´
 			filterChain.doFilter(arg0, arg1);
 			return;
 		}
 		
-		// æ‰§è¡Œåˆ°æ­¤å¤„ï¼Œè¡¨ç¤ºå½“å‰é¡µé¢ä¸åœ¨ç™½åå•ä¸­ï¼Œä¸”æœªç™»å½•ï¼Œåˆ™æ‹¦æˆª
-		// æ‹¦æˆªçš„è¡¨ç°æ˜¯ï¼šé‡å®šå‘åˆ°ç™»å½•é¡µ
-		System.out.println("\tæ‹¦æˆªå½“å‰é¡µé¢ï¼Œå°†é‡å®šå‘åˆ°ç™»å½•é¡µï¼");
+		// Ö´ĞĞµ½´Ë´¦£¬±íÊ¾µ±Ç°Ò³Ãæ²»ÔÚ°×Ãûµ¥ÖĞ£¬ÇÒÎ´µÇÂ¼£¬ÔòÀ¹½Ø
+		// À¹½ØµÄ±íÏÖÊÇ£ºÖØ¶¨Ïòµ½µÇÂ¼Ò³
+		System.out.println("\tÀ¹½Øµ±Ç°Ò³Ãæ£¬½«ÖØ¶¨Ïòµ½µÇÂ¼Ò³£¡");
 		HttpServletResponse response
 			= (HttpServletResponse) arg1;
 		response.sendRedirect("login.html");

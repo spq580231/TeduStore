@@ -34,11 +34,11 @@ import cn.tedu.store.util.TextValidator;
 public class UserController extends BaseController {
 
 	/**
-	 * ç”¨æˆ·ä¸Šä¼ çš„å¤´åƒçš„æœ€å¤§å°ºå¯¸ï¼Œå•ä½ï¼šå­—èŠ‚
+	 * ÓÃ»§ÉÏ´«µÄÍ·ÏñµÄ×î´ó³ß´ç£¬µ¥Î»£º×Ö½Ú
 	 */
 	private static final long AVATAR_MAX_SIZE = 1 * 1024 * 1024;
 	/**
-	 * å¤´åƒç±»å‹ç™½åå•
+	 * Í·ÏñÀàĞÍ°×Ãûµ¥
 	 */
 	private static final List<String> AVATAR_TYPE_WHITE_LIST = new ArrayList<String>();
 
@@ -53,21 +53,23 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = "/handle_reg.do", method = RequestMethod.POST)
 	@ResponseBody
-	// å½“å‰æ–¹æ³•çš„è¿”å›å€¼ä¸­çš„æ³›å‹è¡¨ç¤ºéœ€è¦ç»™å®¢æˆ·ç«¯çš„ç»“æœä¸­ï¼Œé™¤äº†æ“ä½œçŠ¶æ€å’Œæç¤ºä¿¡æ¯ä»¥å¤–ï¼Œè¿˜ç»™ä»€ä¹ˆæ•°æ®
-	public ResponseResult<Void> handleReg(User user) {
-		// éªŒè¯æ•°æ®æ ¼å¼ï¼Œå¦‚æœä¸ç¬¦åˆï¼Œåˆ™ç›´æ¥å“åº”ï¼Œæç¤ºé”™è¯¯
+	// µ±Ç°·½·¨µÄ·µ»ØÖµÖĞµÄ·ºĞÍ±íÊ¾ĞèÒª¸ø¿Í»§¶ËµÄ½á¹ûÖĞ£¬³ıÁË²Ù×÷×´Ì¬ºÍÌáÊ¾ĞÅÏ¢ÒÔÍâ£¬»¹¸øÊ²Ã´Êı¾İ
+	public ResponseResult<Void> handleReg(User user,HttpSession session) {
+		// ÑéÖ¤Êı¾İ¸ñÊ½£¬Èç¹û²»·ûºÏ£¬ÔòÖ±½ÓÏìÓ¦£¬ÌáÊ¾´íÎó
 		
 		if (!TextValidator.checkUsername(user.getUsername())) {
-			return new ResponseResult<Void>(301, "ç”¨æˆ·åæ ¼å¼ä¸æ­£ç¡®ï¼");
+			return new ResponseResult<Void>(301, "ÓÃ»§Ãû¸ñÊ½²»ÕıÈ·£¡");
 
 		}
 		if (!TextValidator.checkPassword(user.getPassword())) {
-			return new ResponseResult<Void>(302, "å¯†ç æ ¼å¼ä¸æ­£ç¡®ï¼");
+			return new ResponseResult<Void>(302, "ÃÜÂë¸ñÊ½²»ÕıÈ·£¡");
 		}
 
-		// è°ƒç”¨ä¸šåŠ¡å±‚å¯¹è±¡å®ç°æ³¨å†Œ
+		// µ÷ÓÃÒµÎñ²ã¶ÔÏóÊµÏÖ×¢²á
 		userService.reg(user);
-		// æ‰§è¡Œè¿”å›
+		
+		session.setAttribute("uid", user.getId());
+		// Ö´ĞĞ·µ»Ø
 		return new ResponseResult<Void>();
 	}
 
@@ -75,20 +77,20 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public ResponseResult<Void> handleLogin(@RequestParam("username") String username,
 			@RequestParam("password") String password, HttpSession session) {
-		// éªŒè¯æ•°æ®æ ¼å¼ï¼Œå¦‚æœä¸ç¬¦åˆï¼Œåˆ™ç›´æ¥å“åº”ï¼Œæç¤ºé”™è¯¯
+		// ÑéÖ¤Êı¾İ¸ñÊ½£¬Èç¹û²»·ûºÏ£¬ÔòÖ±½ÓÏìÓ¦£¬ÌáÊ¾´íÎó
 		if (!TextValidator.checkUsername(username)) {
-			return new ResponseResult<Void>(301, "ç”¨æˆ·åæ ¼å¼ä¸æ­£ç¡®ï¼");
+			return new ResponseResult<Void>(301, "ÓÃ»§Ãû¸ñÊ½²»ÕıÈ·£¡");
 		}
 		if (!TextValidator.checkPassword(password)) {
-			return new ResponseResult<Void>(302, "å¯†ç æ ¼å¼ä¸æ­£ç¡®ï¼");
+			return new ResponseResult<Void>(302, "ÃÜÂë¸ñÊ½²»ÕıÈ·£¡");
 		}
 
-		// è°ƒç”¨ä¸šåŠ¡å±‚å¯¹è±¡çš„login()æ–¹æ³•ï¼Œå¹¶è·å–è¿”å›å€¼
+		// µ÷ÓÃÒµÎñ²ã¶ÔÏóµÄlogin()·½·¨£¬²¢»ñÈ¡·µ»ØÖµ
 		User user = userService.login(username, password);
-		// å°†ç”¨æˆ·idå’Œç”¨æˆ·åå°è£…åˆ°sessionä¸­
+		// ½«ÓÃ»§idºÍÓÃ»§Ãû·â×°µ½sessionÖĞ
 		session.setAttribute("uid", user.getId());
-		session.setAttribute("username", user.getUsername());
-		// è¿”å›
+		//session.setAttribute("username", user.getUsername());
+		// ·µ»Ø
 		return new ResponseResult<Void>();
 	}
 
@@ -96,46 +98,46 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public ResponseResult<Void> handleChangePassword(@RequestParam("old_password") String oldPassword,
 			@RequestParam("new_password") String newPassword, HttpSession session) {
-		// éªŒè¯å¯†ç æ ¼å¼
+		// ÑéÖ¤ÃÜÂë¸ñÊ½
 		if (!TextValidator.checkPassword(oldPassword)) {
-			return new ResponseResult<Void>(302, "åŸå¯†ç æ ¼å¼é”™è¯¯ï¼");
+			return new ResponseResult<Void>(302, "Ô­ÃÜÂë¸ñÊ½´íÎó£¡");
 		}
 		if (!TextValidator.checkPassword(newPassword)) {
-			return new ResponseResult<Void>(302, "æ–°å¯†ç æ ¼å¼é”™è¯¯ï¼");
+			return new ResponseResult<Void>(302, "ĞÂÃÜÂë¸ñÊ½´íÎó£¡");
 		}
 
-		// ä»Sessionä¸­è·å–å½“å‰ç”¨æˆ·çš„id
+		// ´ÓSessionÖĞ»ñÈ¡µ±Ç°ÓÃ»§µÄid
 		Integer id = getUidFromSession(session);
-		// é€šè¿‡ä¸šåŠ¡æ‰§è¡Œä¿®æ”¹å¯†ç 
+		// Í¨¹ıÒµÎñÖ´ĞĞĞŞ¸ÄÃÜÂë
 		userService.changePassword(id, oldPassword, newPassword);
-		// è¿”å›
+		// ·µ»Ø
 		return new ResponseResult<Void>();
 	}
 
 	@RequestMapping(value = "/change_info.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseResult<Void> handleChangeInfo(User user, HttpSession session) {
-		// è·å–id
+		// »ñÈ¡id
 		Integer uid = getUidFromSession(session);
-		// æ‰§è¡Œ
+		// Ö´ĞĞ
 		user.setId(uid);
 		userService.changeInfo(user);
-		// è¿”å›
+		// ·µ»Ø
 		return new ResponseResult<Void>();
 	}
 
 	@RequestMapping(value = "/info.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseResult<User> getInfo(HttpSession session) {
-		// è·å–uid
+		// »ñÈ¡uid
 		Integer uid = getUidFromSession(session);
-		// æŸ¥è¯¢
+		// ²éÑ¯
 		User user = userService.findUserById(uid);
-		// åˆ›å»ºè¿”å›å€¼å¯¹è±¡
+		// ´´½¨·µ»ØÖµ¶ÔÏó
 		ResponseResult<User> rr = new ResponseResult<User>();
-		// æŠŠæŸ¥è¯¢ç»“æœå°è£…åˆ°è¿”å›å€¼å¯¹è±¡çš„dataå±æ€§ä¸­
+		// °Ñ²éÑ¯½á¹û·â×°µ½·µ»ØÖµ¶ÔÏóµÄdataÊôĞÔÖĞ
 		rr.setData(user);
-		// è¿”å›
+		// ·µ»Ø
 		return rr;
 	}
 
@@ -150,70 +152,70 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public ResponseResult<String> handleUpload(HttpServletRequest request, HttpSession session,
 			@RequestParam("file") CommonsMultipartFile file) {
-		// æ£€æŸ¥æ˜¯å¦ä¸Šä¼ äº†æ–‡ä»¶
+		// ¼ì²éÊÇ·ñÉÏ´«ÁËÎÄ¼ş
 		if (file.isEmpty()) {
-			throw new RequestArgumentException("æ²¡æœ‰é€‰æ‹©ä¸Šä¼ çš„æ–‡ä»¶ï¼Œæˆ–ä¸Šä¼ çš„æ–‡ä»¶çš„å†…å®¹ä¸ºç©ºï¼");
+			throw new RequestArgumentException("Ã»ÓĞÑ¡ÔñÉÏ´«µÄÎÄ¼ş£¬»òÉÏ´«µÄÎÄ¼şµÄÄÚÈİÎª¿Õ£¡");
 		}
-		// æ£€æŸ¥æ–‡ä»¶å¤§å°
+		// ¼ì²éÎÄ¼ş´óĞ¡
 		long fileSize = file.getSize();
 		if (fileSize > AVATAR_MAX_SIZE) {
-			throw new UploadFileSizeLimitException("ä¸Šä¼ çš„æ–‡ä»¶å¤§å°è¶…å‡ºé™åˆ¶ï¼é™åˆ¶å€¼ä¸º" + (AVATAR_MAX_SIZE / 1024) + "KByteã€‚");
+			throw new UploadFileSizeLimitException("ÉÏ´«µÄÎÄ¼ş´óĞ¡³¬³öÏŞÖÆ£¡ÏŞÖÆÖµÎª" + (AVATAR_MAX_SIZE / 1024) + "KByte¡£");
 		}
-		// æ£€æŸ¥æ–‡ä»¶ç±»å‹
+		// ¼ì²éÎÄ¼şÀàĞÍ
 		String contentType = file.getContentType();
 		if (!AVATAR_TYPE_WHITE_LIST.contains(contentType)) {
-			throw new UploadFileContentTypeException("ä¸Šä¼ æ–‡ä»¶ç±»å‹é”™è¯¯ï¼å…è®¸çš„æ–‡ä»¶ç±»å‹ï¼š" + AVATAR_TYPE_WHITE_LIST);
+			throw new UploadFileContentTypeException("ÉÏ´«ÎÄ¼şÀàĞÍ´íÎó£¡ÔÊĞíµÄÎÄ¼şÀàĞÍ£º" + AVATAR_TYPE_WHITE_LIST);
 		}
 
-		// è·å–å½“å‰ç™»å½•çš„ç”¨æˆ·çš„id
+		// »ñÈ¡µ±Ç°µÇÂ¼µÄÓÃ»§µÄid
 		Integer id = getUidFromSession(session);
 
-		// ç”¨æˆ·ä¸Šä¼ çš„æ–‡ä»¶å­˜å‚¨åˆ°çš„æ–‡ä»¶å¤¹çš„åç§°
+		// ÓÃ»§ÉÏ´«µÄÎÄ¼ş´æ´¢µ½µÄÎÄ¼ş¼ĞµÄÃû³Æ
 		String uploadDirName = "upload";
-		// ç”¨æˆ·ä¸Šä¼ çš„æ–‡ä»¶å­˜å‚¨åˆ°çš„æ–‡ä»¶å¤¹çš„è·¯å¾„
+		// ÓÃ»§ÉÏ´«µÄÎÄ¼ş´æ´¢µ½µÄÎÄ¼ş¼ĞµÄÂ·¾¶
 		String parentDirPath = request.getServletContext().getRealPath(uploadDirName);
-		// ç”¨æˆ·ä¸Šä¼ çš„æ–‡ä»¶å­˜å‚¨åˆ°çš„æ–‡ä»¶å¤¹
+		// ÓÃ»§ÉÏ´«µÄÎÄ¼ş´æ´¢µ½µÄÎÄ¼ş¼Ğ
 		File parentDir = new File(parentDirPath);
-		// ç¡®ä¿æ–‡ä»¶å¤¹å­˜åœ¨
+		// È·±£ÎÄ¼ş¼Ğ´æÔÚ
 		if (!parentDir.exists()) {
 			parentDir.mkdirs();
 		}
 
-		// è·å–åŸå§‹æ–‡ä»¶å
+		// »ñÈ¡Ô­Ê¼ÎÄ¼şÃû
 		String originalFileName = file.getOriginalFilename();
-		// è·å–åŸå§‹æ–‡ä»¶çš„æ‰©å±•å
+		// »ñÈ¡Ô­Ê¼ÎÄ¼şµÄÀ©Õ¹Ãû
 		int beginIndex = originalFileName.lastIndexOf(".");
 		String suffix = originalFileName.substring(beginIndex);
-		// ç”¨æˆ·ä¸Šä¼ çš„æ–‡ä»¶å­˜å‚¨çš„æ–‡ä»¶å
+		// ÓÃ»§ÉÏ´«µÄÎÄ¼ş´æ´¢µÄÎÄ¼şÃû
 		String fileName = getFileName(id) + suffix;
-		// ç¡®å®šç”¨æˆ·ä¸Šä¼ çš„æ–‡ä»¶åœ¨æœåŠ¡å™¨ç«¯çš„è·¯å¾„
+		// È·¶¨ÓÃ»§ÉÏ´«µÄÎÄ¼şÔÚ·şÎñÆ÷¶ËµÄÂ·¾¶
 		String avatar = uploadDirName + "/" + fileName;
 
-		// ç”¨æˆ·ä¸Šä¼ çš„æ–‡ä»¶å­˜å‚¨åˆ°æœåŠ¡å™¨ç«¯çš„æ–‡ä»¶å¯¹è±¡
+		// ÓÃ»§ÉÏ´«µÄÎÄ¼ş´æ´¢µ½·şÎñÆ÷¶ËµÄÎÄ¼ş¶ÔÏó
 		File dest = new File(parentDir, fileName);
 
-		// å°†ç”¨æˆ·ä¸Šä¼ çš„æ–‡ä»¶å­˜å‚¨åˆ°æŒ‡å®šæ–‡ä»¶å¤¹
+		// ½«ÓÃ»§ÉÏ´«µÄÎÄ¼ş´æ´¢µ½Ö¸¶¨ÎÄ¼ş¼Ğ
 		try {
 			file.transferTo(dest);
 		} catch (IllegalStateException e) {
-			throw new UploadStateException("è¯»å–æ–‡ä»¶ä¸­æ–­ï¼Œæ–‡ä»¶è·¯å¾„å¯èƒ½å·²ç»å‘ç”Ÿå˜åŒ–ï¼");
+			throw new UploadStateException("¶ÁÈ¡ÎÄ¼şÖĞ¶Ï£¬ÎÄ¼şÂ·¾¶¿ÉÄÜÒÑ¾­·¢Éú±ä»¯£¡");
 		} catch (IOException e) {
-			throw new UploadIOException("è¯»å–æ•°æ®å‡ºé”™ï¼æ–‡ä»¶å¯èƒ½å·²è¢«ç§»åŠ¨ã€åˆ é™¤ï¼Œæˆ–ç½‘ç»œè¿æ¥ä¸­æ–­ï¼");
+			throw new UploadIOException("¶ÁÈ¡Êı¾İ³ö´í£¡ÎÄ¼ş¿ÉÄÜÒÑ±»ÒÆ¶¯¡¢É¾³ı£¬»òÍøÂçÁ¬½ÓÖĞ¶Ï£¡");
 		}
-		// å°†ç”¨æˆ·çš„å¤´åƒæ•°æ®æ›´æ–°åˆ°æ•°æ®è¡¨
+		// ½«ÓÃ»§µÄÍ·ÏñÊı¾İ¸üĞÂµ½Êı¾İ±í
 		userService.changeAvatar(id, avatar);
 
-		// è¿”å›
+		// ·µ»Ø
 		ResponseResult<String> rr = new ResponseResult<String>();
 		rr.setData(avatar);
 		return rr;
 	}
 
 	/**
-	 * è·å–ä¸Šä¼ æ–‡ä»¶çš„æ–‡ä»¶åï¼Œæ–‡ä»¶åçš„å‘½åè§„åˆ™æ˜¯ï¼šuid-yyyyMMddHHmmss
+	 * »ñÈ¡ÉÏ´«ÎÄ¼şµÄÎÄ¼şÃû£¬ÎÄ¼şÃûµÄÃüÃû¹æÔòÊÇ£ºuid-yyyyMMddHHmmss
 	 * 
-	 * @param uid ç”¨æˆ·id
-	 * @return åŒ¹é…æ ¼å¼çš„å­—ç¬¦ä¸²
+	 * @param uid ÓÃ»§id
+	 * @return Æ¥Åä¸ñÊ½µÄ×Ö·û´®
 	 */
 	private String getFileName(Integer uid) {
 		Date date = new Date();

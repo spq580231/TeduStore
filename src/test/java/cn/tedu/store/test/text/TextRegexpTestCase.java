@@ -1,16 +1,18 @@
 package cn.tedu.store.test.text;
 
-import org.junit.Test;
+
 
 public class TextRegexpTestCase {
 	
-	@Test
-	public void testUsername() {
-		String username = "_a12";
-		String regexp = "[a-zA-Z]{1}[a-zA-Z0-9_]{3,15}";
-		boolean result = username.matches(regexp);
-		System.out.println(result);
+	public static void main(String[] args) {
+		 // 55-88  
+        String regex = "^ABC([5-7]+[0-9]+|[8]+[8]+)$";  
+       // String regex1 = "^ABC(00[1-9]|0[1-9][0-9]|100)$";  
+        String str="ABC59";
+      System.out.println(str.matches(regex));
+  
 	}
+
 
 }
 
