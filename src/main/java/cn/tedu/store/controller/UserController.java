@@ -56,11 +56,9 @@ public class UserController extends BaseController {
 	// 当前方法的返回值中的泛型表示需要给客户端的结果中，除了操作状态和提示信息以外，还给什么数据
 	public ResponseResult<Void> handleReg(User user,HttpSession session) {
 		// 验证数据格式，如果不符合，则直接响应，提示错误
-
 		
 		if (!TextValidator.checkUsername(user.getUsername())) {
 			return new ResponseResult<Void>(301, "用户名格式不正确！");
-
 		}
 		if (!TextValidator.checkPassword(user.getPassword())) {
 			return new ResponseResult<Void>(302, "密码格式不正确！");
