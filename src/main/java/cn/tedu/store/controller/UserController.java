@@ -66,6 +66,7 @@ public class UserController extends BaseController {
 
 		// 调用业务层对象实现注册
 		userService.reg(user);
+        System.out.println(user.getUsername());
 		
 		session.setAttribute("uid", user.getId());
 		// 执行返回
