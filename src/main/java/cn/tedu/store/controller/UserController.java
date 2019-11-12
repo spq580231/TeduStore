@@ -38,7 +38,7 @@ public class UserController extends BaseController {
      */
     private static final long AVATAR_MAX_SIZE = 1 * 1024 * 1024;
     /**
-     * 头像类型白名单
+     * 头像类型白名单fff
      */
     private static final List<String> AVATAR_TYPE_WHITE_LIST = new ArrayList<String>();
 
@@ -59,7 +59,7 @@ public class UserController extends BaseController {
     // 当前方法的返回值中的泛型表示需要给客户端的结果中，除了操作状态和提示信息以外，还给什么数据
     public ResponseResult<Void> handleReg(User user, HttpSession session) {
         // 验证数据格式，如果不符合，则直接响应，提示错误
-
+        String str;
         if (!TextValidator.checkUsername(user.getUsername())) {
             return new ResponseResult<Void>(301, "用户名格式不正确！");
         }
@@ -110,6 +110,7 @@ public class UserController extends BaseController {
         if (!TextValidator.checkPassword(newPassword)) {
             return new ResponseResult<Void>(302, "新密码格式错误！");
         }
+
 
         // 从Session中获取当前用户的id
         Integer id = getUidFromSession(session);
