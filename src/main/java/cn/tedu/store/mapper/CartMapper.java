@@ -32,10 +32,10 @@ public interface CartMapper {
 	 * @param goodsNum
 	 * @return
 	 */
-	Integer updateGoodsNum(
-		@Param("id") Integer id, 
-		@Param("goodsNum") Integer goodsNum);
-		
+	Integer updateGoodsNum(@Param("id") Integer id, @Param("goodsNum") Integer goodsNum);
+
+	Integer deleteGoodsFromCart(Integer id);
+
 	/**
 	 * 
 	 * @param uid

@@ -3,6 +3,7 @@ package cn.tedu.store.service.impl;
 import java.util.Iterator;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,13 +72,13 @@ public class CartServiceImpl implements ICartService {
 
     public void reduceNum(Integer id) {
         Cart cart = findCartById(id);
+
         if (cart == null) {
-            throw new CartNotFoundException(
-                    "尝试访问的购物车数据不存在！");
+            throw new CartNotFoundException("尝试访问的购物车数据不存在！");
         }
         if (cart.getGoodsNum() <= 1) {
-            throw new GoodsNumLimitException(
-                    "尝试修改的购物车数据的商品数量招出限制！");
+            cartMapper.deleteGoodsFromCart(id);
+            return;
         }
         Integer num = cart.getGoodsNum() - 1;
         updateGoodsNum(id, num);

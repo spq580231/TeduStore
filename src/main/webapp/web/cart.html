@@ -320,7 +320,7 @@
 	
 	
 	function add(id){
-		 alert("add():" + id);
+		 //alert("add():" + id);
 		var url = "../cart/add_num.do";
 		var data = "id=" +id+"";
 		$.ajax({
@@ -350,7 +350,32 @@
 	}
 	
 	function reduce(id){
-		alert("reduce:" + id);
+	var url = "../cart/reduce_num.do";
+		var data = "id=" +id+"";
+		$.ajax({
+			"url": url,
+			"data": data,
+			"type": "GET",
+			"dataType": "json",
+			"success": function(json) {
+				if (json.state == 200) {
+					// 输入框中的数量：取出原数量，并-1
+					var n = parseInt($("#goods-num-" + id).val()) - 1;
+					$("#goods-num-" + id).val(n);
+					// 显示单项商品的总价
+					var p = parseInt($("#goods-price-" + id).html());
+					var total = p * n;
+					$("#goods-total-" + id).html(total);
+				} else {
+					alert("操作失败！" + json.message)
+				}
+			},
+			"error": function(xhr) {
+				console.log("cart响应码：" + xhr.status);
+				alert("您的登录信息已过期，请重新登录！cart.html");
+				location.href = "login.html";
+			}
+		});
 	}
 	
 	$(document).ready(function() {

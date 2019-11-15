@@ -39,6 +39,11 @@
 			goods_id=#{goodsId} AND uid=#{uid}
 	</select>
 
+
+	<delete id="deleteGoodsFromCart">
+		DELETE FROM T_CART WHERE id=#{id}
+	</delete>
+
 	<!-- 修改数量 -->
 	<!-- Integer updateGoodsNum(
 		@Param("id") Integer id, 
@@ -112,6 +117,9 @@
 			</foreach>
 			)
 	</select>
+
+
+
 
 </mapper>
 
