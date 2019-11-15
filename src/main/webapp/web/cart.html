@@ -320,9 +320,9 @@
 	
 	
 	function add(id){
-		// alert("add:" + id);
+		 alert("add():" + id);
 		var url = "../cart/add_num.do";
-		var data = "id=" + id;
+		var data = "id=" +id+"";
 		$.ajax({
 			"url": url,
 			"data": data,
@@ -342,8 +342,8 @@
 				}
 			},
 			"error": function(xhr) {
-				console.log("响应码：" + xhr.status);
-				alert("您的登录信息已过期，请重新登录！");
+				console.log("cart响应码：" + xhr.status);
+				alert("您的登录信息已过期，请重新登录！cart.html");
 				location.href = "login.html";
 			}
 		});

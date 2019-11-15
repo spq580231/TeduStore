@@ -45,20 +45,20 @@
 	<mvc:annotation-driven />
 	
 	<!-- 拦截器链 -->
-	<mvc:interceptors>
-		<!-- 第1个拦截器：登录拦截器 -->
-		<mvc:interceptor>
-			<!-- 拦截路径 -->
-			<mvc:mapping path="/user/**"/>
-			<mvc:mapping path="/address/**"/>
-			<mvc:mapping path="/cart/**"/>
-			<!-- 白名单 -->
-			<mvc:exclude-mapping path="/user/handle_reg.do"/>
-			<mvc:exclude-mapping path="/user/handle_login.do"/>
-			<!-- 拦截器 -->
-			<bean class="cn.tedu.store.interceptor.LoginInterceptor" />
-		</mvc:interceptor>
-	</mvc:interceptors>
+<!--	<mvc:interceptors>-->
+<!--		&lt;!&ndash; 第1个拦截器：登录拦截器 &ndash;&gt;-->
+<!--		<mvc:interceptor>-->
+<!--			&lt;!&ndash; 拦截路径 &ndash;&gt;-->
+<!--			<mvc:mapping path="/user/**"/>-->
+<!--			<mvc:mapping path="/address/**"/>-->
+<!--			<mvc:mapping path="/cart/**"/>-->
+<!--			&lt;!&ndash; 白名单 &ndash;&gt;-->
+<!--			<mvc:exclude-mapping path="/user/handle_reg.do"/>-->
+<!--			<mvc:exclude-mapping path="/user/handle_login.do"/>-->
+<!--			&lt;!&ndash; 拦截器 &ndash;&gt;-->
+<!--			<bean class="cn.tedu.store.interceptor.LoginInterceptor" />-->
+<!--		</mvc:interceptor>-->
+<!--	</mvc:interceptors>-->
 	
 </beans>
 

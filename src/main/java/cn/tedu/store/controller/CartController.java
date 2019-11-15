@@ -37,6 +37,7 @@ public class CartController extends BaseController {
 		return new ResponseResult<Void>();
 	}
 
+
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public ResponseResult<List<CartVO>> getCartListByUid(HttpSession session) {

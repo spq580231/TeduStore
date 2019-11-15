@@ -15,29 +15,29 @@ import cn.tedu.store.service.IGoodsService;
 @Controller
 @RequestMapping("/goods")
 public class GoodsController {
-	
-	@Autowired
-	private IGoodsService goodsService;
-	
-	@RequestMapping("/hot_list.do")
-	@ResponseBody
-	public ResponseResult<List<Goods>> getHotList() {
-		ResponseResult<List<Goods>> rr
-			= new ResponseResult<List<Goods>>();
-		List<Goods> list = goodsService.getHotGoodsList();
-		rr.setData(list);
-		return rr;
-	}
-	
-	@RequestMapping("/details.do")
-	@ResponseBody
-	public ResponseResult<Goods> getDetails(
-		@RequestParam("id") String id) {
-		Goods goods = goodsService.getGoodsById(id);
-		ResponseResult<Goods> rr
-			= new ResponseResult<Goods>();
-		rr.setData(goods);
-		return rr;
-	}
+
+    @Autowired
+    private IGoodsService goodsService;
+
+    @RequestMapping("/hot_list.do")
+    @ResponseBody
+    public ResponseResult<List<Goods>> getHotList() {
+        ResponseResult<List<Goods>> rr
+                = new ResponseResult<List<Goods>>();
+        List<Goods> list = goodsService.getHotGoodsList();
+        rr.setData(list);
+        return rr;
+    }
+
+    @RequestMapping("/details.do")
+    @ResponseBody
+    public ResponseResult<Goods> getDetails(
+            @RequestParam("id") String id) {
+        Goods goods = goodsService.getGoodsById(id);
+        ResponseResult<Goods> rr
+                = new ResponseResult<Goods>();
+        rr.setData(goods);
+        return rr;
+    }
 
 }
