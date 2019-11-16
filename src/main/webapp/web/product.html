@@ -446,7 +446,7 @@
             success: function (json) {
                 if (json.state == 200) {
                     $("#message").html("<span style='color: #888888'>加入购物车成功</span>")
-                    $("#message").show ().delay (2000).fadeOut ();
+                    $("#message").show ().delay (1500).fadeOut ();
                 } else {
                     alert("操作失败！" + json.message);
                 }

@@ -2,6 +2,8 @@ package cn.tedu.store.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,4 +85,11 @@ public class CartController extends BaseController {
 		return new ResponseResult<Void>();
 	}
 
+
+	@RequestMapping("del_goods.do")
+	@ResponseBody
+	public ResponseResult<Void> delFromCart(@RequestParam("id") Integer id) {
+		cartService.delFromCart(id);
+		return new ResponseResult<Void>();
+	}
 }

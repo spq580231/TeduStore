@@ -1,5 +1,6 @@
 package cn.tedu.store.service.impl;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +16,11 @@ import cn.tedu.store.service.ex.GoodsNumLimitException;
 import cn.tedu.store.service.ex.InsertDataException;
 import cn.tedu.store.service.ex.UpdateDataException;
 import cn.tedu.store.vo.CartVO;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Service("cartService")
 public class CartServiceImpl implements ICartService {
@@ -70,18 +76,23 @@ public class CartServiceImpl implements ICartService {
         updateGoodsNum(id, num);
     }
 
-    public void reduceNum(Integer id) {
+    public void reduceNum(Integer id)  {
         Cart cart = findCartById(id);
 
         if (cart == null) {
             throw new CartNotFoundException("尝试访问的购物车数据不存在！");
         }
         if (cart.getGoodsNum() <= 1) {
-            cartMapper.deleteGoodsFromCart(id);
+            delFromCart(id);
             return;
         }
         Integer num = cart.getGoodsNum() - 1;
         updateGoodsNum(id, num);
+    }
+
+
+    public void delFromCart(Integer id) {
+        cartMapper.deleteGoodsFromCart(id);
     }
 
     /**

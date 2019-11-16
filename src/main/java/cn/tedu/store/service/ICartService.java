@@ -5,6 +5,10 @@ import java.util.List;
 import cn.tedu.store.entity.Cart;
 import cn.tedu.store.vo.CartVO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 public interface ICartService {
 
 	/**
@@ -12,6 +16,7 @@ public interface ICartService {
 	 * @param cart
 	 */
 	void addToCart(Cart cart);
+
 	
 	/**
 	 * 
@@ -26,8 +31,7 @@ public interface ICartService {
 	 * @param ids
 	 * @return
 	 */
-	List<CartVO> getListByIds(Integer uid,
-			Integer[] ids);
+	List<CartVO> getListByIds(Integer uid, Integer[] ids);
 	
 	/**
 	 * 
@@ -40,4 +44,6 @@ public interface ICartService {
 	 * @param id
 	 */
 	void reduceNum(Integer id);
+
+	void delFromCart(Integer id);
 }
